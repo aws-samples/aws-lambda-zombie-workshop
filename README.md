@@ -42,6 +42,10 @@ This workshop has several lab exercises that you can complete to extend the func
 
 **The baseline chat application is now configured and working! There is still important functionality missing and the Lambda Signal Corps needs you to build it out...so get started below!**
 
+10\. Note that *Lab 3* involves the Amazon ElasticSearch Service.
+Creating an ElasticSearch cluster may require approximately 10 minutes.
+To save time later it may be helpful to go ahead and follow steps 1-6 in *Lab 3* now which will start the creation process so that it is ready and waiting when you get to that portion of the workshop.
+
 ## Lab 1 - Typing Indicator
 
 The typing indicator shows up in the web chat client. It's a section above the post message input that shows when other survivors are typing. The UI and backend Lambda functions have been implemented, and this lab focuses on how to enable the feature in API Gateway.
