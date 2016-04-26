@@ -301,7 +301,7 @@ In this section, you'll create a slack group and wire it up to the Chat Service.
 
 2\. Once logged into Slack, navigate to [https://slack.com/apps](https://slack.com/apps) and click **Build your own** near the top of the page. Then on the next screen, select **Make a Custom Integration**.
 
-3\. On the "Custom Integration" page, select **Slack Commands** to create a Slack Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint).
+3\. On the "Custom Integration" page, select **Slash Commands** to create a Slash Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint).
 
 4\. On the Slash Commands page, define a command in the **Commands** text box. Insert **/survivors** as your Slack Command. Then select "Add Slash Command Integration" to save it.
 
