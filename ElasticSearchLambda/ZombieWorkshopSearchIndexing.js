@@ -14,7 +14,7 @@ var creds = new AWS.EnvironmentCredentials('AWS');
 
 /* Lambda "main": Execution begins here */
 exports.handler = function(event, context) {
-    
+
         console.log(JSON.stringify(event, null, '  '));
         event.Records.forEach(function(record) {
             if (typeof record.dynamodb.NewImage != 'undefined')
@@ -24,8 +24,8 @@ exports.handler = function(event, context) {
                     message: record.dynamodb.NewImage.message.S,
                     channel: record.dynamodb.NewImage.channel.S,
                     timestamp: record.dynamodb.NewImage.timestamp.N}
-                }
-                console.log('document posted to ElasticSearch: ' + JSON.stringify(doc))
+                };
+                console.log('document posted to ElasticSearch: ' + JSON.stringify(doc));
                 postToES(JSON.stringify(doc), context);
              }
              else
@@ -33,7 +33,7 @@ exports.handler = function(event, context) {
                  console.log('skipping non-inserts');
              }
         });
-}
+};
 
 
 /*
@@ -47,7 +47,7 @@ function postToES(doc, context) {
     req.path = path.join('/', esDomain.index, esDomain.doctype);
     req.region = esDomain.region;
     req.headers['presigned-expires'] = false;
-    req.headers['Host'] = endpoint.host;
+    req.headers.Host = endpoint.host;
     req.body = doc;
 
     console.log('Creating the Signer for the post request');
