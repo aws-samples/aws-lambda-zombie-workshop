@@ -54,6 +54,10 @@ Tokyo (ap-northeast-1) | [![Launch Zombie Workshop Stack into Tokyo with CloudFo
 
 **The baseline chat application is now configured and working! There is still important functionality missing and the Lambda Signal Corps needs you to build it out...so get started below!**
 
+10\. Note that *Lab 3* involves the Amazon ElasticSearch Service.
+Creating an ElasticSearch cluster may require approximately 10 minutes.
+To save time later it may be helpful to go ahead and follow steps 1-6 in *Lab 3* now which will start the creation process so that it is ready and waiting when you get to that portion of the workshop.
+
 ## Lab 1 - Typing Indicator
 
 **What you'll do in this lab...**
