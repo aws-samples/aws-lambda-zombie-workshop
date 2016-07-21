@@ -194,7 +194,7 @@ In this section, you’ll create a free-trial Twilio SMS phone number. You will 
 
 *   The functions in this workshop are authored in Nodejs 0.10 but will work regardless of the version of Node you choose when creating your Function in the console. The workshop will soon be upgraded to use Nodejs 4.3.
 
-14\. After you have copied the code into the Lambda inline code console and modifed the POST URL, scroll down to the **Lambda function handler and role** section. For the role, select **Basic execution role** from the dropdown and click "Allow" on the popup window to confirm the creation of the role. For this Lambda function we do not need any IAM permissions to other AWS services.
+14\. After you have copied the code into the Lambda inline code console and modifed the POST URL, scroll down to the **Lambda function handler and role** section. Choose **Create a customer role**. On the next screen, select **lambda_basic_execution** from the IAM Role dropdown and leave the Policy Name as **Create a new Role Policy**. Click "Allow" on the popup window to confirm the creation of the role. For this Lambda function we do not need any IAM permissions to other AWS services.
 
 15\. Keep all the rest of the defaults set and click **Next** and then **Create function** on the Review page to create your Lambda function.
 
