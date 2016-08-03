@@ -289,7 +289,7 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 
 *   This step requires that your cluster is finished creating and in "Active" state before you'll have access to see the endpoint of your cluster.
 
-15\. Now you'll add an IAM role to your Lambda function. For the Role (you may need to navigate to the Configuration tab in Lambda to see this), create a new DynamoDB event stream role by clicking **DynamoDB event stream role** in the role dropdown. This will open a new page confirming that you want to create a role, just click **Allow** to proceed.
+15\. Now you'll add an IAM role to your Lambda function. For the Role create a new DynamoDB event stream role by clicking **Create a custom role** in the role dropdown. This will open a new page confirming that you want to create a role, rename it to **"lambda_dynamo_streams"** and click **Allow** to proceed.
 
 16\. In the "Timeout" field for your Lambda function (you may need to visit the Configuration tab and Advanced Settings to see this), change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
 
