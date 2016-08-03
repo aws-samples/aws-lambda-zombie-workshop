@@ -293,11 +293,11 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 
 16\. In the "Timeout" field for your Lambda function (you may need to visit the Configuration tab and Advanced Settings to see this), change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
 
-17\. Select the "Event Sources" tab for the new **"[Your CloudFormation stack name]-ESsearch"** function that you created.
+17\. Select the **Triggers** tab for the new **"[Your CloudFormation stack name]-ESsearch"** function that you created.
 
-18\. Select **Add event source**.
+18\. Click **Add trigger**.
 
-19\. Select the DynamoDB Event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"** You can leave the rest as the defaults.
+19\. Click the outlined box and select **DynamoDB** and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. You can leave the rest as the defaults.
 
 20\. After creation, you should see an event source that is similar to the screenshot below:  
 ![API Gateway Invoke URL](/Images/Search-Step20.png)
