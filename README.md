@@ -188,7 +188,7 @@ In this section, you’ll create a free-trial Twilio SMS phone number. You will 
 
 *   As you'll see throughout this workshop, we will leverage separate Lambda functions to pre-process data before sending standardized/formatted requests to the /zombie/message resource. This allows us to-reuse the existing DynamoDB logic behind the /message resource multiple times rather than writing multiple functions that all interact with DynamoDB individually. As messages come in to your Twilio number, the Twilio webhook forwards them as POSTs to your /zombie/twilio resource, which will be integrated with a backend pre-processing Lambda function. This function will strip apart the Twilio payload and format it before making an HTTP POST to your /zombie/message service.
 
-12\. Click **Create a Lambda function** and select **Next** on the blueprint screen as we will be creating a brand new function.
+12\. Click **Create a Lambda function** and select **Next** on the blueprint screen as we will be creating a brand new function. Skip the **Configure triggers** screen as well.
 
 13\. Create a name for the function, such as **"[Your CloudFormation stack name]-TwilioProcessing"**. Leave the "Runtime" as **Node.js 4.3**.    From the GitHub repo, open the **TwilioProcessing.js** file. Copy the entire contents from this file into the Lambda code entry section. Once you have copied the code into Lambda, scroll down to [line 47](/Twilio/TwilioProcessing.js#L47) in the code where the "host" variable is declared. It should show a value of "INSERT YOUR API GATEWAY URL HERE EXCLUDING THE HTTPS://". Please replace this string with the fully qualified domain name (FQDN) of the URL for your **/zombie/message** POST method found in API Gateway. For example, it should look something like "xxxxxxxx.execute-api.us-west-2.amazonaws.com".
 
@@ -277,7 +277,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 10\. Select **Create a Lambda Function**.
 
-11\. Skip the Blueprint section by selecting the **Next** button in the bottom right.
+11\. Skip the Blueprint section by selecting the **Next** button in the bottom right. Skip the **Configure triggers** screen as well.
 
 12\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime as Node.js 4.3. You can set a description for the function if you'd like.
 
@@ -387,7 +387,7 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 7\. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
 
-8\. Skip past the blueprints page as we will not be using one.
+8\. Skip past the blueprints page as we will not be using one. Skip the **Configure triggers** screen as well.
 
 9\. Give your function a name such as **"[Your CloudFormation Stack name]-SlackService"**. For the Nodejs version, you can keep the default Nodejs 4.3 selected. Now navigate to the GitHub repo for this workshop, or the location where you downloaded the GitHub files to your local machine.
 
