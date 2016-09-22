@@ -117,7 +117,7 @@ Click **Next Step**.
 
 7\. On the verifications page, leave the defaults for the first two sections and scroll down to the section titled **Do you want to customize your email verification message?**
 
-Add a custom email subject such as "Signal Corps Survivor Confirmation". We won't modify the message body but you could add your own custom message in there. We'll let Cogntio send the emails from the service email address, but in production you could configure Cognito to send these verifications from an email server you own.
+Add a custom email subject such as "Signal Corps Survivor Confirmation". We won't modify the message body but you could add your own custom message in there. We'll let Cognito send the emails from the service email address, but in production you could configure Cognito to send these verifications from an email server you own.
 
 Click **Next step**.
 
@@ -461,7 +461,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 11\. Skip the Blueprint section by selecting the Skip button in the bottom right.
 
-12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Lastest** and select the checkbox **Enable trigger**. Then click on Next button.
+12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Latest** and select the checkbox **Enable trigger**. Then click on Next button.
 
 13\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime as Node.js 4.3. You can set a description for the function if you'd like.
 
