@@ -42,6 +42,8 @@ This section provides instructions to tear down your environment when you're don
 ### Let's Begin! Launch the CloudFormation Stack
 *Prior to launching a stack, be aware that a few of the resources launched need to be manually deleted when the workshop is over. When finished working, please review the "Workshop Cleanup" section to learn what manual teardown is required by you.*
 
+*The cloudformation templates creates IAM Users. This may fail with `Error creating login profile for user` if you have setup a password policy. Please make sure that you use an AWS account without a password policy.*
+
 1\. To begin this workshop, **click one of the 'Deploy to AWS' buttons below for the region you'd like to use**. This is the AWS region where you will launch resources for the duration of this workshop. This will open the CloudFormation template in the AWS Management Console for the region you select.
 
 Region | Launch Template
