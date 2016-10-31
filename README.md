@@ -460,7 +460,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 11\. On the Blueprints screen select **Blank Function** to create a Lambda function from scratch.
 
-12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Lastest** and select the checkbox **Enable trigger**. Then click on Next button.
+12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Latest** and select the checkbox **Enable trigger**. Then click on Next button.
 
 13\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime as Node.js 4.3. You can set a description for the function if you'd like.
 
