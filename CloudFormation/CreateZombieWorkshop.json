@@ -27,7 +27,7 @@
       "us-east-2": {
         "S3Endpoint": "https://s3-us-east-2",
         "S3ContentsBucket": "aws-zombie-workshop-us-east-2",
-        "CognitoRegion": "us-east-1"
+        "CognitoRegion": "us-east-2"
       },
 
       "eu-west-1": {
