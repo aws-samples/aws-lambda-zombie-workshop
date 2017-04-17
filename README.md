@@ -420,7 +420,7 @@ After copying the code into the editor, click the **Save** button. You have now 
 In the text editor, delete all the code already in there and copy the following into the editor:
 
 ```
-#set($inputRoot = $input.path('$'))
+# set($inputRoot = $input.path('$'))
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Message>
@@ -642,7 +642,7 @@ A simple workflow of this architecture is:
 
 Intel Edison -> SNS topic -> Your AWS Lambda functions subscribed to the topic.
 
-####Creating the AWS Backend
+#### Creating the AWS Backend
 
 **If you are following this guide during a workshop presented by AWS, please ignore the steps below, 1-3\. An SNS topic should already be configured for the workshop participants to consume messages from. That SNS topic ARN will be provided to you.**
 
@@ -654,7 +654,7 @@ Intel Edison -> SNS topic -> Your AWS Lambda functions subscribed to the topic.
 
 3\. You now have your central SNS topic configured and ready to use. Ensure that you make a note of the Topic ARN and region where you have created the topic, you will need it in some of the following steps.
 
-####Installing the application on the Intel Edison
+#### Installing the application on the Intel Edison
 **If you are following this guide during a workshop presented by AWS, please ignore this section. An Intel Edison board should already be configured for the workshop particants to consume messages from.**
 
 1\. First, you will need to get your Edison board set up. You can find a getting started guide for this on the Intel site [here](https://software.intel.com/en-us/articles/assemble-intel-edison-on-the-arduino-board). Note that for the purpose of this tutorial, we will be writing our client code for the Edison in Node.js and will therefore be using the Intel® XDK for IoT (referred to as 'XDK' from here on, and which you will need to install) as our IDE.
