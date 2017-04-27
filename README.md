@@ -349,7 +349,7 @@ In this section, you’ll create a free-trial Twilio SMS phone number. You will 
 
 * **International Users** - These are US phone numbers that you are provisioning in Twilio. You can also choose to configure an internationl number in Twilio, however there may be charges that apply. Currently this workshop only supports US phone numbers in the front end JS application due to the necessary formatting logic that has yet to be introduced into the code!
 
-If you have an international mobile device, you can still do this lab. When registering for a user account in the zombie chat, just use a dummy placeholder 10 digit phone number for now. Later steps in this lab will illustrate a workaround that allows you to send SMS using your international phne number*
+If you have an international mobile device, you can still do this lab. When registering for a user account in the zombie chat, just use a dummy placeholder 10 digit phone number for now. Later steps in this lab will illustrate a workaround that allows you to send SMS using your international phone number.
 
 4\. Once you’ve received a phone number, click the **Manage Numbers** button on the left navigation pane. Click on your phone number, which will take you to the properties page for that number.
 
