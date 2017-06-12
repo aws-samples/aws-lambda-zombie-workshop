@@ -138,7 +138,7 @@ On the Tags page, leave the defaults and click **Next step**. Next, on the Devic
 
     * Pre-Authentication: This trigger will invoke when a user's information is submitted for authentication to Cognito each time the survivor signs into the web application. The code for with this Lambda Trigger takes the user's attributes have been passed in as parameters from the invoking User Pool and using them to perform an update on the User's record in DynamoDB Users table. This allows us to load the user's data into DynamoDB when they initially sign in and also keep it current with the values in User Pools in an on-going basis as they log in each time.
 
-    * For this workshop we use the same backend Lambda function for both of the triggers. On invocation, the function checks what type of even has occurred, Post-Confirmation or Pre-Authentication, and executes the correct code accordingly.
+    * For this workshop we use the same backend Lambda function for both of the triggers. On invocation, the function checks what type of event has occurred, Post-Confirmation or Pre-Authentication, and executes the correct code accordingly.
 
 11\. Review the settings for your User Pool and click **Create pool**. If your pool created successfully you should be returned to the Pool Details page and it will display a green box that says "Your user pool was created successfully".
 
