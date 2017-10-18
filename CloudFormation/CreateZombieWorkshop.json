@@ -121,7 +121,7 @@
             },
             {
               "Effect": "Allow",
-              "Action": ["elasticsearch:*"],
+              "Action": ["es:*"],
               "Resource": ["*"]
             },
             {
