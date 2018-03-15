@@ -47,6 +47,7 @@ function postToES(doc, context) {
     req.path = path.join('/', esDomain.index, esDomain.doctype);
     req.region = esDomain.region;
     req.headers['presigned-expires'] = false;
+    req.headers['Content-Type'] = 'application/json';
     req.headers['Host'] = endpoint.host;
     req.body = doc;
 
