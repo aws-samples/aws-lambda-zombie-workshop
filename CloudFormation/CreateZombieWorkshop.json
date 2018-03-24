@@ -510,6 +510,125 @@
       ]
     },
 
+    "CognitoUserPool": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "UserPoolName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "userpool"
+            ]
+          ]
+        },
+        "AliasAttributes": [
+          "email"
+        ],
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "EmailVerificationSubject": "Signal Corps Survivor Confirmation",
+        "LambdaConfig": {
+          "PostConfirmation": { "Fn::GetAtt" : ["CognitoPoolsFunction", "Arn"] },
+          "PreAuthentication": { "Fn::GetAtt" : ["CognitoPoolsFunction", "Arn"] }
+        },
+        "Schema": [
+          {
+            "Name": "name",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "email",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "phone_number",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "slackuser",
+            "AttributeDataType": "String",
+            "Mutable": true
+          },
+          {
+            "Name": "slackteamdomain",
+            "AttributeDataType": "String",
+            "Mutable": true
+          },
+          {
+            "Name": "camp",
+            "AttributeDataType": "String",
+            "Mutable": true
+          }
+        ]
+      }
+    },
+    "App": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "ClientName": "Zombie Survivor Chat App",
+        "GenerateSecret": false,
+        "ReadAttributes": [
+          "address",
+          "birthdate",
+          "custom:camp",
+          "custom:slackteamdomain",
+          "custom:slackuser",
+          "email",
+          "email_verified",
+          "family_name",
+          "gender",
+          "given_name",
+          "locale",
+          "middle_name",
+          "name",
+          "nickname",
+          "phone_number",
+          "phone_number_verified",
+          "picture",
+          "preferred_username",
+          "profile",
+          "updated_at",
+          "website",
+          "zoneinfo"
+        ],
+        "WriteAttributes": [
+          "address",
+          "birthdate",
+          "custom:camp",
+          "custom:slackteamdomain",
+          "custom:slackuser",
+          "email",
+          "family_name",
+          "gender",
+          "given_name",
+          "locale",
+          "middle_name",
+          "name",
+          "nickname",
+          "phone_number",
+          "picture",
+          "preferred_username",
+          "profile",
+          "updated_at",
+          "website",
+          "zoneinfo"
+        ],
+        "UserPoolId": {
+          "Ref": "CognitoUserPool"
+        }
+      }
+    },
+
     "WriteMessagesToDynamoDB": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -792,6 +911,14 @@
     "BucketCopiedContentsFrom": {
       "Value": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "S3ContentsBucket"]},
       "Description": "This is the local region AWS bucket where your files were copied from."
+    },
+    "CognitoUserPoolId": {
+      "Value": { "Ref": "CognitoUserPool" },
+      "Description": "The Cognito user pool Id."
+    },
+    "AppId": {
+      "Value": { "Ref": "App" },
+      "Description": "The App Id."
     }
   }
 }

@@ -7,9 +7,6 @@ This workshop has a baseline survivor chat app that is launched via [CloudFormat
 
 Prior to beginning the labs, you will need to finalize the setup of User authentication for the application with [Cognito User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html). This is a necessary step to finalize the readiness of the application.
 
-### Required: Setup Authentication with Cognito User Pools
-In this setup lab, you will integrate user authentication into your serverless survivor chat application using Amazon Cognito User Pools.
-
 ### Labs
 Each of the labs in this workshop is an independent section and you may choose to do some or all of them, or in any order that you prefer.
 
@@ -72,137 +69,85 @@ Region | Launch Template
 
 7\. Click the "Outputs" tab in CloudFormation and click the link for "MyChatRoomURL". This should open your chat application in a new tab. Leave this tab open as you'll come back to it later.
 
-Please continue to the next section for the required Cognito User Pools authentication setup.
+Please continue to the next section to finish the required Cognito User Pools authentication setup.
 
-## Setup Authentication with Cognito User Pools (Required)
+## Finish setup Authentication with Cognito User Pools (Required)
 
 The survivor chat uses [Amazon Cognito](https://aws.amazon.com/cognito/) for authentication. Cognito Federated Identity enables you to authenticate users through an external identity provider and provides temporary security credentials to access your app’s backend resources in AWS or any service behind Amazon API Gateway. Amazon Cognito works with external identity providers that support SAML or OpenID Connect, social identity providers (such as Facebook, Twitter, Amazon) and you can also integrate your own identity provider.
 
 In addition to federating 3rd party providers such as Facebook, Google, and other providers, Cognito also offers a new built-in Identity Provider called [Cognito User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html).
 
-A Cognito Federated Identity pool has already been created for you when you launched CloudFormation.
+A Cognito User pool and Federated Identity pool has already been created for you when you launched CloudFormation.
 
-You will now setup the Cognito User Pool as the user directory of your chat app survivors and configure it as a valid Authentication Provider with the Cognito Federated Identity Pool. API Gateway has been configured with IAM Authorization to only allow requests that are signed with valid AWS permissions. When a user signs into the Survivor Chat App (User Pool) successfully, a web call is made to the Cognito Federated Identity Pool to assume temporary AWS credentials for your authenticated user. These credentials are used to make signed [AWS SigV4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) HTTPS requests to your message API.
+You will now link both together. Cognito User Pool will be the user directory of your chat app survivors and you have to configure it as a valid Authentication Provider with the Cognito Federated Identity Pool. API Gateway has been configured with IAM Authorization to only allow requests that are signed with valid AWS permissions. When a user signs into the Survivor Chat App (User Pool) successfully, a web call is made to the Cognito Federated Identity Pool to assume temporary AWS credentials for your authenticated user. These credentials are used to make signed [AWS SigV4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) HTTPS requests to your message API.
 
 ![Overview of Cognito Authentication](/Images/CognitoOverview.png)
 
 **Let's get started...**
 
-1\. Navigate to the Cognito service console.
+1\. Navigate back to CloudFormation and find the Cognito user pool Id (CognitoUserPoolId) and the App Id (AppId) in the Outputs tab of your CloudFormation stack. Open a text editor on your computer and copy both into it for later use.
+
+2\. Navigate to the Cognito service console.
 
 ![Navigate to the Cognito service](/Images/Cognito-Step1.png)
 
 Cognito User Pools is not available in all AWS regions. Please review the list [here](https://docs.aws.amazon.com/general/latest/gr/rande.html#cognito_identity_region) for the regions that Cognito is available in. Therefore if you launched your CloudFormation stack in any region other than one of those listed on the above website, then please use the top navigation bar in the management console to switch AWS regions and navigate to **us-east-1 (Virginia)** to configure Cognito. Your application will stay hosted in the region you launched the CloudFormation template, but the authentication with Cognito will reside in us-east-1 (Virginia). If you launched the Cloudformation stack in one of those regions where Cognito exists, then please simply navigate to the Cognito service in the AWS Management Console as the service is available in that region already and you will configure it within that region.
 
-When inside the Cognito service console, click the blue button **Manage your User Pools**. You will setup the user directory that your chat application users will authenticate to when they use your app.
-
-2\. Click the blue button **Create a User Pool** in the upper right corner. You'll create a new user directory.
-
-3\. In the "Pool Name" text box, name your user pool **[Your CloudFormation stack name]-userpool**. For example, if you named your CloudFormation stack "sample" earlier, then your user pool name would be "sample-userpool". After naming your User Pool, click **Step through Settings** to continue with manual setup.
-
-4\. On the attributes page, select the "Required" checkbox for the following attributes: **email, name, phone number**.
-
-* Cognito User Pools allows you to define attributes that you'd like to associate with users of your application. These represent values that your users will provide when they sign up for your app. They are available to your application as a part of the session data provided to your client apps when users authenticate with Cognito.
-
-5\. Click the link "Add custom attribute". Leave all the defaults and type a "Name" of **slackuser** exactly as typed here. Add 2 additional custom attributes: **slackteamdomain** and **camp**.
-
-* Within a User Pool, you can specify custom attributes which you define when you create the User Pool. For the Zombie Survivor chat application, we will include 3 custom attributes.
-
-Your attributes configuration should match the image below:
-
-![Cognito User Pools: Attributes Configuration](/Images/Cognito-Step5.png)
-
-Click **Next Step**.
-
-6\. On the Policies page, leave the Password policy settings as default and click **Next step**.
-
-7\. On the verifications page, leave the defaults and click **Next step**.
-
-* We will not require MFA for this application. However, for during sign up we are requiring verification via email address. This is denoted with the email checkbox selected for "Do you want to require verification of emails or phone numbers?". With this setting, when users sign up for the application, a confirmation code will be sent to their email which they'll be required to input into the application for confirmation.
-
-8\. On the "Message Customizations" page, in the section titled **Do you want to customize your email verification message?** add a custom email subject such as "Signal Corps Survivor Confirmation". We won't modify the message body but you could add your own custom message in there. We'll let Cognito send the emails from the service email address, but in production you could configure Cognito to send these verifications from an email server you own. Leave the rest of the default settings and click **Next step**.
-
-On the Tags page, leave the defaults and click **Next step**. Next, on the Devices page, leave the default option of "No" selected. We will not configure the User Pool to remember user's devices.
-
-9\. On the Apps page, click **Add an app**. In the **App Name** textbox, type "Zombie Survivor Chat App" and **deselect the client secret checkbox**. Click **Set attribute read and write permissions**. You need to make sure that the app has "writable" and "readable" access to the attributes you created. Make sure that **all of the checkboxes are selected** for "Readable Attributes" and "Writable Attributes". Then click **Create app**, and then click **Next step**.
-
-10\. In the dropdowns for the **Pre authentication** and **Post confirmation** triggers, select the Lambda function named "[Your CloudFormation Stack name]-CognitoLambdaTrigger-[Your Region]". Click **Next step**.
-
-* Cognito User Pools allows developers to inject custom workflow logic into the signup and signin process. This custom workflow logic is represented with AWS Lambda functions known as Lambda Triggers.
-
-* With this feature, developers can pass information to a Lambda function and specify that function to invoke at different stages of the signup/signin process, allowing for a serverless and event driven authentication process.
-
-* In this application, we will create two (2) Lambda triggers:
-
-    * Post-Confirmation: This trigger will invoke after a user successfully submits their verification code upon signup and becomes a confirmed user. The Lambda function associated with this trigger takes the attributes provided by the user and inserts them into a custom Users table in DynamoDB that was created with CloudFormation. This allows us to perform querying of user attributes within our application.
-
-    * Pre-Authentication: This trigger will invoke when a user's information is submitted for authentication to Cognito each time the survivor signs into the web application. The code for with this Lambda Trigger takes the user's attributes have been passed in as parameters from the invoking User Pool and using them to perform an update on the User's record in DynamoDB Users table. This allows us to load the user's data into DynamoDB when they initially sign in and also keep it current with the values in User Pools in an on-going basis as they log in each time.
-
-    * For this workshop we use the same backend Lambda function for both of the triggers. On invocation, the function checks what type of even has occurred, Post-Confirmation or Pre-Authentication, and executes the correct code accordingly.
-
-11\. Review the settings for your User Pool and click **Create pool**. If your pool created successfully you should be returned to the Pool Details page and it will display a green box that says "Your user pool was created successfully".
-
-12\. Open a text editor on your computer and copy into it the "Pool Id" displayed on the Pool details page. Then click into the **Apps** tab found on the left side navigation pane. You should see an **App client id** displayed. Copy that **App client id** into your text editor as well.
-
-You are done configuring the User Pool. You will now setup federation into the Cognito Identity Pool that has already been created for you.
+3\. When inside the Cognito service console, click the blue button **Manage Federate Identities **.
 
 * An [Amazon Cognito Identity Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html) has been configured for you. Identity Pools allow external federated users to assume temporary credentials from AWS to make service API calls from within your apps.
 
-* You've just created the User Pool for authentication into your app. Now your users still need access to make IAM Authorized AWS API calls.
+* We've just created the User Pool for authentication into your app. Now your users still need access to make IAM Authorized AWS API calls.
 
 * You'll setup federation inside of Cognito Identity and allow your User Pool as an **Authentication Provider**.
 
-On the top navigation bar in the management console, switch to **Federated Identities** by clicking the link as shown below.
+4\. Click into the Identity Pool that has already been created for you. It should be named "[Your CloudFormation stack name]_identitypool". On the Idenity pool dashboard, in the upper right, select **Edit identity pool**.
 
-![Navigating to Federated Identities Console](/Images/Cognito-Step12.png)
-
-13\. Click into the Identity Pool that has already been created for you. It should be named "[Your CloudFormation stack name] _ identitypool". On the Idenity pool dashboard, in the upper right, select **Edit identity pool**.
-
-14\. Cognito Identity allows you to give access to both authenticated users and unauthenticated (guest) users. The permissions associated with these groups of users is dictated by the IAM role that you attach to these Cognito roles. Your Authenticated and Unauthenticated Cognito roles have already been configured for you in CloudFormation. The Authenticated role has been configured to give permissions to the principal (your Cognito authenticated application user) to make "execute-api:invoke" calls to the API Gateway endpoint ARNs associated with the survivor serverless app.
+5\. Cognito Identity allows you to give access to both authenticated users and unauthenticated (guest) users. The permissions associated with these groups of users is dictated by the IAM role that you attach to these Cognito roles. Your Authenticated and Unauthenticated Cognito roles have already been configured for you in CloudFormation. The Authenticated role has been configured to give permissions to the principal (your Cognito authenticated application user) to make "execute-api:invoke" calls to the API Gateway endpoint ARNs associated with the survivor serverless app.
 
 * When users authenticate into the application, they become an authenticated user, and the application allows them to send chat messages to the survivor chat.
 
-15\. Click the black dropdown arrow in the section titled "Authentication providers". You will configure your Identity pool to allow federated access from your Identity Provider, your Cognito User Pool. In the "Cognito" identity provider tab, insert your **User Pool ID** and **App Client ID** into their respective text boxes from your text editor file. Do not delete them from the text file, you'll need these items again in a later step.
+6\. Click the black dropdown arrow in the section titled "Authentication providers". You will configure your Identity pool to allow federated access from your Identity Provider, your Cognito User Pool. In the "Cognito" identity provider tab, insert your **User Pool ID** and **App Client ID** into their respective text boxes from your text editor file. Do not delete them from the text file, you'll need these items again in a later step.
 
 You should have copied these from your User Pool earlier when you set it up. If you do not have these copied, please navigate back to your Cognito User Pool you created earlier and locate your User Pool Id and App Client ID.
 
 Scroll to the bottom of the page and click **Save Changes** to save the User Pool configuration settings. Your Cognito Federated Identiy Pool has been configured with Congito User Pool as an IdP. When users authenticate to the User Pool, they will assume temporary credentials with the permissions allowed via the Authenticated Role.
 
-16\. You will now make an update to an application config file so that the serverless Javascript application can communicate with your User Pool to log users in.
+7\. You will now make an update to an application config file so that the serverless Javascript application can communicate with your User Pool to log users in.
 
 Navigate to the Amazon S3 console **in the region where you launched your CloudFormation stack.**
 
 * If you changed regions to configure Cognito, please return back to the region where you launched the stack and navigate to the S3 service.
 
-![Navigate to the S3 service](/Images/Cognito-Step16.png)
+![Navigate to the S3 service](/Images/Cognito-Step7.png)
 
-17\. On the Amazon S3 buckets listing page, find and click into the bucket that was created for you by CloudFormation. It should be named with your stack name prepended to the beginning. Something like [CloudFormation Stack Name]-s3bucketforwebsitecontent"....
+8\. On the Amazon S3 buckets listing page, find and click into the bucket that was created for you by CloudFormation. It should be named with your stack name prepended to the beginning. Something like [CloudFormation Stack Name]-s3bucketforwebsitecontent"....
 
 * In the S3 Console search bar you can type **s3bucketforwebsitecontent** and your S3 bucket will display.
 
-18\. This bucket contains all the contents for hosting your serverless JS app as well as the source code for the workshop's Lambda functions and CloudFormation resources. Please do not delete these contents. Click into the folder (prefix) named **S3** and navigate through to the file **S3/assets/js/constants.js**
+9\. This bucket contains all the contents for hosting your serverless JS app as well as the source code for the workshop's Lambda functions and CloudFormation resources. Please do not delete these contents. Click into the folder (prefix) named **S3** and navigate through to the file **S3/assets/js/constants.js**
 
 Download the **S3/assets/js.constants.js** file to your local machine and open it with a text editor.
 
-![Download the constants.js file](/Images/Cognito-Step18.png)
+![Download the constants.js file](/Images/Cognito-Step9.png)
 
-19\. Open up the constants.js file and copy over the User Pool ID into the "USER_POOL_ID" variable. Then copy the App Client ID into the "CLIENT_ID" variable. These should be copied from the open text file you had open from earlier.
+10\. Open up the constants.js file and copy over the User Pool ID into the "USER_POOL_ID" variable. Then copy the App Client ID into the "CLIENT_ID" variable. These should be copied from the open text file you had open from earlier.
 
 * Your serverless javascript zombie application requires this constants values in file communicate with the different services of the workshop.
 
 * The Identity Pool Id was automatically filled in with several other variables when the CloudFormation template was launched.
 
-20\. Save the constants.js file and upload it back to S3. While in the S3 console window, make sure you are in the **js** directory. Click the blue **Upload** button and upload the constants.js file from your local machine. Within the upload dialog, select the "Manage public permissions" dropdown and set the permissions on the file to read-only for the public by selecting the **Read** checkbox next to Everyone under the Objects category. You can also drag your file from your local machine into the S3 browser console to initiate an upload and then when the object is uploaded, make sure to select **Make Public**.
+11\. Save the constants.js file and upload it back to S3. While in the S3 console window, make sure you are in the **js** directory. Click the blue **Upload** button and upload the constants.js file from your local machine. Within the upload dialog, select the "Manage public permissions" dropdown and set the permissions on the file to read-only for the public by selecting the **Read** checkbox next to Everyone under the Objects category. You can also drag your file from your local machine into the S3 browser console to initiate an upload and then when the object is uploaded, make sure to select **Make Public**.
 
 * Your application now has the configuration it needs to interact with Cognito.
 
-21\. Navigate back to CloudFormation and find the Chat Room URL (MyChatRoomURL) in the Outputs tab of your CloudFormation stack. Click it to open the chat application in a new browser window.
+12\. Navigate back to CloudFormation and find the Chat Room URL (MyChatRoomURL) in the Outputs tab of your CloudFormation stack. Click it to open the chat application in a new browser window.
 
 * If you already had the application opened in your browser, please refresh the page so that the new constants.js loads with the app.
 
-22\. You should see a sign in page for the Zombie survivor web app. You need to create an account so click **Sign Up**.
+13\. You should see a sign in page for the Zombie survivor web app. You need to create an account so click **Sign Up**.
 
-23\. Fill out the form to sign up as a survivor.
+14\. Fill out the form to sign up as a survivor.
 
 * **Select your Camp**: Specify the geography where you live! Currently this attribute is not used in the application and is available for those that want to tackle an extra credit opportunity!. When you're done with the workshop, try and tackle the Channel Challenge in the Appendix.
 
@@ -212,7 +157,7 @@ Download the **S3/assets/js.constants.js** file to your local machine and open i
 
 When done, click **Sign Up**.
 
-24\. A form should appear asking you to type in your confirmation code. Please check your inbox for the email address you signed up with. You should received an email with the subject "Signal Corps Survivor Confirmation" (May be in your Spam folder!). Copy over the verification code and enter into the confirmation window.
+15\. A form should appear asking you to type in your confirmation code. Please check your inbox for the email address you signed up with. You should received an email with the subject "Signal Corps Survivor Confirmation" (May be in your Spam folder!). Copy over the verification code and enter into the confirmation window.
 
 **Troubleshooting tips:**
 
@@ -225,11 +170,11 @@ When done, click **Sign Up**.
 * Users created in the application are also stored in a DynamoDB table named "Users". If you did not have your Cognito triggers set up correctly, you will need to navigate to the DynamoDB Users table and delete the entry for your user. You can then re-register in the application again.
 
 
-![Confirm your signup](/Images/Cognito-Step24.png)
+![Confirm your signup](/Images/Cognito-Step15.png)
 
 After confirming your account, sign in with your credentials and begin chatting! You should see a red button called **Start Chatting** - click that button to toggle your session on. You may then begin typing messages followed by the "Enter" key to submit them.
 
-25\. Your messages should begin showing up in the central chat pane window. Feel free to share the URL with your teammates, have them signup for accounts and begin chatting as a group! If you are building this solution solo, you can create multiple user accounts with different email addresses. Then login to both user accounts in different browsers to simulate multiple users.
+16\. Your messages should begin showing up in the central chat pane window. Feel free to share the URL with your teammates, have them signup for accounts and begin chatting as a group! If you are building this solution solo, you can create multiple user accounts with different email addresses. Then login to both user accounts in different browsers to simulate multiple users.
 
 **The baseline chat application is now configured and working! There is still important functionality missing and the Lambda Signal Corps needs you to build it out...so get started below!**
 
