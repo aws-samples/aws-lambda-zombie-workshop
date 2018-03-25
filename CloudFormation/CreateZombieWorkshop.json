@@ -9,6 +9,10 @@
       "MinValue": "0",
       "MaxValue": "10",
       "Default": "0"
+    }, "S3ContentsBucket": {
+      "Description": "The source bucket for this workshop.",
+      "Type": "String",
+      "Default": "cmr-aws-zombie-workshop"
     }
   },
 
@@ -16,47 +20,38 @@
     "AllowedRegions": {
       "us-west-2": {
         "S3Endpoint": "https://s3-us-west-2",
-        "S3ContentsBucket": "aws-zombie-workshop-us-west-2",
         "CognitoRegion": "us-west-2"
       },
       "us-east-1": {
         "S3Endpoint": "https://s3",
-        "S3ContentsBucket": "aws-zombie-workshop-us-east-1",
         "CognitoRegion": "us-east-1"
       },
       "us-east-2": {
         "S3Endpoint": "https://s3-us-east-2",
-        "S3ContentsBucket": "aws-zombie-workshop-us-east-2",
         "CognitoRegion": "us-east-2"
       },
       "eu-west-1": {
         "S3Endpoint": "https://s3-eu-west-1",
-        "S3ContentsBucket": "aws-zombie-workshop-eu-west-1",
         "CognitoRegion": "eu-west-1"
       },
       "eu-central-1": {
         "S3Endpoint": "https://s3-eu-central-1",
-        "S3ContentsBucket": "aws-zombie-workshop-eu-central-1",
         "CognitoRegion": "eu-central-1"
       },
       "ap-northeast-1": {
         "S3Endpoint": "https://s3-ap-northeast-1",
-        "S3ContentsBucket": "aws-zombie-workshop-ap-northeast-1",
         "CognitoRegion": "ap-northeast-1"
       },
       "ap-northeast-2": {
         "S3Endpoint": "https://s3-ap-northeast-2",
-        "S3ContentsBucket": "aws-zombie-workshop-ap-northeast-2",
         "CognitoRegion": "ap-northeast-2"
       },
       "ap-southeast-1": {
         "S3Endpoint": "https://s3-ap-southeast-1",
-        "S3ContentsBucket": "aws-zombie-workshop-ap-southeast-1",
         "CognitoRegion": "us-east-1"
       },
       "ap-southeast-2": {
         "S3Endpoint": "https://s3-ap-southeast-2",
-        "S3ContentsBucket": "aws-zombie-workshop-ap-southeast-2",
         "CognitoRegion": "us-east-1"
       }
     }
@@ -358,7 +353,7 @@
       "Properties": {
         "ServiceToken": { "Fn::GetAtt" : ["S3GetFilesFunction", "Arn"] },
         "StackName": { "Ref": "AWS::StackName" },
-        "BucketName": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "S3ContentsBucket"]},
+        "BucketName": { "Ref" : "S3ContentsBucket" },
         "WebsiteBucketCreatedEarlier": { "Ref" : "S3BucketForWebsiteContent" },
         "S3Region": { "Ref" : "AWS::Region" }
       },
@@ -374,7 +369,7 @@
         "Handler": "S3GetFilesFunction.handler",
         "Role": { "Fn::GetAtt": ["ZombieLabLambdaRole", "Arn"] },
         "Code": {
-          "S3Bucket": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "S3ContentsBucket"]},
+          "S3Bucket": { "Ref" : "S3ContentsBucket" },
           "S3Key": "S3GetFilesFunction.zip"
         },
         "Runtime": "nodejs4.3",
@@ -411,7 +406,7 @@
         "ServiceToken": { "Fn::GetAtt": ["CognitoTriggerBuild", "Arn"] },
         "region": { "Ref": "AWS::Region" },
         "CognitoRegion": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "CognitoRegion"]},
-        "LambdaFunctionBucket": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "S3ContentsBucket"]},
+        "LambdaFunctionBucket": { "Ref" : "S3ContentsBucket" },
         "StackName": { "Ref": "AWS::StackName" },
         "IamRole": { "Fn::GetAtt": ["ZombieLabLambdaRole", "Arn"] }
       },
@@ -468,6 +463,124 @@
       ]
     },
 
+    "CognitoUserPool": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "UserPoolName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "userpool"
+            ]
+          ]
+        },
+        "AliasAttributes": [
+          "email"
+        ],
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "EmailVerificationSubject": "Signal Corps Survivor Confirmation",
+        "LambdaConfig": {
+          "PostConfirmation": { "Fn::GetAtt" : ["CognitoPoolsFunction", "Arn"] },
+          "PreAuthentication": { "Fn::GetAtt" : ["CognitoPoolsFunction", "Arn"] }
+        },
+        "Schema": [
+          {
+            "Name": "name",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "email",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "phone_number",
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Required": true
+          },
+          {
+            "Name": "slackuser",
+            "AttributeDataType": "String",
+            "Mutable": true
+          },
+          {
+            "Name": "slackteamdomain",
+            "AttributeDataType": "String",
+            "Mutable": true
+          },
+          {
+            "Name": "camp",
+            "AttributeDataType": "String",
+            "Mutable": true
+          }
+        ]
+      }
+    },
+    "AppClient": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "ClientName": "Zombie Survivor Chat App",
+        "GenerateSecret": false,
+        "ReadAttributes": [
+          "address",
+          "birthdate",
+          "custom:camp",
+          "custom:slackteamdomain",
+          "custom:slackuser",
+          "email",
+          "email_verified",
+          "family_name",
+          "gender",
+          "given_name",
+          "locale",
+          "middle_name",
+          "name",
+          "nickname",
+          "phone_number",
+          "phone_number_verified",
+          "picture",
+          "preferred_username",
+          "profile",
+          "updated_at",
+          "website",
+          "zoneinfo"
+        ],
+        "WriteAttributes": [
+          "address",
+          "birthdate",
+          "custom:camp",
+          "custom:slackteamdomain",
+          "custom:slackuser",
+          "email",
+          "family_name",
+          "gender",
+          "given_name",
+          "locale",
+          "middle_name",
+          "name",
+          "nickname",
+          "phone_number",
+          "picture",
+          "preferred_username",
+          "profile",
+          "updated_at",
+          "website",
+          "zoneinfo"
+        ],
+        "UserPoolId": {
+          "Ref": "CognitoUserPool"
+        }
+      }
+    },
     "CognitoPoolsFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -488,7 +601,6 @@
         "CreateAPIGateway"
       ]
     },
-
     "CreateCognitoPools": {
       "Type": "Custom::CognitoPoolsFunction",
       "Properties": {
@@ -498,7 +610,9 @@
         "cognitoRoleARN": { "Fn::GetAtt": ["ZombieLabLambdaRole", "Arn"] },
         "bucket": { "Ref": "S3BucketForWebsiteContent" },
         "constantsFile": "S3/assets/js/constants.js",
-        "StackName": { "Ref": "AWS::StackName" }
+        "StackName": { "Ref": "AWS::StackName" },
+        "CognitoUserPoolId": { "Ref": "CognitoUserPool" },
+        "ClientAppId": { "Ref": "AppClient" }
       },
       "DependsOn": [
         "S3BucketForWebsiteContent",
@@ -790,8 +904,16 @@
       "Condition": "CreateIamResources"
     },
     "BucketCopiedContentsFrom": {
-      "Value": { "Fn::FindInMap" : [ "AllowedRegions", { "Ref" : "AWS::Region" }, "S3ContentsBucket"]},
+      "Value": { "Ref" : "S3ContentsBucket" },
       "Description": "This is the local region AWS bucket where your files were copied from."
+    },
+    "CognitoUserPoolId": {
+      "Value": { "Ref": "CognitoUserPool" },
+      "Description": "The Cognito user pool Id."
+    },
+    "AppClientId": {
+      "Value": { "Ref": "AppClient" },
+      "Description": "The App Client Id."
     }
   }
 }
