@@ -33,7 +33,7 @@ exports.handler = function(event, context, callback) {
       FunctionName: stackName + '-CognitoLambdaTrigger' + '-' + region,
       Handler: 'index.handler',
       Role: iamRole,
-      Runtime: 'nodejs4.3',
+      Runtime: 'nodejs8.10',
       Timeout: '120'
     };
     lambda.createFunction(params, function(err, data) {
