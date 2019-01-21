@@ -5,7 +5,7 @@ var https = require('https');
 
 /* == Globals == */
 var API = {
-    region: 'INSERT YOUR REGION HERE', // the region code where you launched the stack
+    region: 'us-east-1', // the region code where you launched the stack
     endpoint: 'INSERT YOUR API GATEWAY FQDN HERE INCLUDING THE HTTPS://' //i.e.: Something like ... https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
 };
 
