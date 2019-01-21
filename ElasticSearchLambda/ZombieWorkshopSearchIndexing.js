@@ -3,7 +3,7 @@ var path = require('path');
 
 /* == Globals == */
 var esDomain = {
-    region: 'us-west-2',
+    region: 'us-west-1',
     endpoint: 'https://ENDPOINT_HERE',
     index: 'messages',
     doctype: 'message'
