@@ -43,7 +43,7 @@ This section provides instructions to tear down your environment when you're don
 
 Region | Launch Template
 ------------ | -------------
-**N. Virginia** (us-east-1) | [![Launch Zombie Workshop Stack into Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=zombiechat&templateURL=https://s3.amazonaws.com/-tcsn-zombielab/CreateZombieWorkshop.json)
+**N. Virginia** (us-east-1) | [![Launch Zombie Workshop Stack into Virginia with CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/images/cloudformation-launch-stack-button.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=zombiechat&templateURL=https://s3.amazonaws.com/tcsn-zombielab/CreateZombieWorkshop.json)
 
 2\. Once you are inside the AWS CloudFormation Console in US-EAST-1, you should be on a screen titled "Select Template". We are providing CloudFormation with a template on your behalf, so click the blue **Next** button to proceed.
 
