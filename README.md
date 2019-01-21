@@ -23,7 +23,7 @@ Each of the labs in this workshop is an independent section and you may choose t
 
 * **Lab 3: Search Integration with Elasticsearch**  
 
-    This exercise adds an Elasticsearch cluster to the application which is used to index chat messages streamed from the DynamoDB table containing chat messages.
+    This exercise adds an Elasticsearch cluster to the application which is used to index chat messages streamed from the DynamoDB table containing chat messages. You may also practice searching and visualization with Kibana.
 
 * **Lab 4: Slack Integration**  
 
@@ -58,6 +58,9 @@ Region | Launch Template
 6\. Your stack will take about 3 minutes to launch and you can track its progress in the "Events" tab. When it is done creating, the status will change to "CREATE_COMPLETE".
 
 7\. Click the "Outputs" tab in CloudFormation and click the link for "MyChatRoomURL". This should open your chat application in a new tab. Leave this tab open as you'll come back to it later.
+	Note - It will be helpful to leave open the CloudFormation Outputs tab as this information will be referenced
+
+
 
 Please continue to the next section for the required Cognito User Pools authentication setup.
 
@@ -79,7 +82,7 @@ You will now setup the Cognito User Pool as the user directory of your chat app 
 
 ![Navigate to the Cognito service](/Images/Cognito-Step1.png)
 
-Cognito User Pools is not available in all AWS regions. Please review the list [here](https://docs.aws.amazon.com/general/latest/gr/rande.html#cognito_identity_region) for the regions that Cognito is available in. Therefore if you launched your CloudFormation stack in any region other than one of those listed on the above website, then please use the top navigation bar in the management console to switch AWS regions and navigate to **us-east-1 (Virginia)** to configure Cognito. Your application will stay hosted in the region you launched the CloudFormation template, but the authentication with Cognito will reside in us-east-1 (Virginia). If you launched the Cloudformation stack in one of those regions where Cognito exists, then please simply navigate to the Cognito service in the AWS Management Console as the service is available in that region already and you will configure it within that region.
+Cognito User Pools is not available in all AWS regions. Please review the list [here](https://docs.aws.amazon.com/general/latest/gr/rande.html#cognito_identity_region) for the regions that Cognito is available in. Therefore if you launched your CloudFormation stack in any region other than one of those listed on the above website, then please use the top navigation bar in the management console to switch AWS regions and navigate to **us-east-1 (Virginia)** to configure Cognito. Your application will stay hosted in the region you launched the CloudFormation template, but the authentication with Cognito will reside in us-east-1 (Virginia). 
 
 When inside the Cognito service console, click the blue button **Manage your User Pools**. You will setup the user directory that your chat application users will authenticate to when they use your app.
 
@@ -193,9 +196,9 @@ Download the **S3/assets/js.constants.js** file to your local machine and open i
 
 * **Select your Camp**: Specify the geography where you live! Currently this attribute is not used in the application and is available for those that want to tackle an extra credit opportunity!. When you're done with the workshop, try and tackle the Channel Challenge in the Appendix.
 
-* **Slack Username**: Type the Slack Username you will use during the Slack lab of this workshop. This associates your Slack username with your Survivor app user account and is required if you want to do the Slack lab.
+* **Slack Username**: Type the Slack Username - your display name in Slack - you will use during the Slack lab of this workshop. This associates your Slack username with your Survivor app user account and is required if you want to do the Slack lab.
 
-* **Slack Team Domain Name**: Slack users can be members of many teams. Type the Slack team domain name that you want to integrate with this survivor chat app. The combination of a Slack team domain and Slack Username will unique identity a user to associate with your new Survivor chat app account.
+* **Slack Team Domain Name**: Slack users can be members of many teams. Type the Slack team domain name - tcsn-serverless -  that you want to integrate with this survivor chat app. The combination of a Slack team domain and Slack Username will unique identity a user to associate with your new Survivor chat app account.
 
 When done, click **Sign Up**.
 
@@ -219,6 +222,7 @@ After confirming your account, sign in with your credentials and begin chatting!
 25\. Your messages should begin showing up in the central chat pane window. Feel free to share the URL with your teammates, have them signup for accounts and begin chatting as a group! If you are building this solution solo, you can create multiple user accounts with different email addresses. Then login to both user accounts in different browsers to simulate multiple users.
 
 **The baseline chat application is now configured and working! There is still important functionality missing and the Lambda Signal Corps needs you to build it out...so get started below!**
+
 
 *This workshop does not utilize API Gateway Cache. Please KEEP THIS FEATURE TURNED OFF as it is not covered under the AWS Free Tier and will incur additional charges. It is not a requirement for the workshop.*
 
@@ -312,7 +316,7 @@ The application uses [CORS](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.
 
 **LAB 1 COMPLETE**
 
-Head back to the survivor chat app and **Refresh the page** type messages. POST requests are being made to the Talkers API resource which is updating a DynamoDB table continuously with timestamps along with who is typing. Simultaneously, the application is performing a continuous polling (GET Requests) against /zombie/talkers to show which survivors are typing. This displays
+Head back to the survivor chat app and **Refresh the page or logout/login** type messages. POST requests are being made to the Talkers API resource which is updating a DynamoDB table continuously with timestamps along with who is typing. Simultaneously, the application is performing a continuous polling (GET Requests) against /zombie/talkers to show which survivors are typing. This displays
 
 ![talker resource](/Images/Typing-Done.png)
 
@@ -332,13 +336,13 @@ In this section, you’ll create a free-trial Twilio SMS phone number. You will 
 2\. Once you have created your account, login to the Twilio console and navigate to the Home icon on the left navigation pane. On the Home screen/console dashboard, scroll down to the **Phone Numbers** section and click "Phone Numbers".
 ![Manage Twilio Phone Number](/Images/Twilio-Step2.png)
 
-3\. On the Phone Numbers screen, click **Get Started** to assign a phone number to your account. Then click the red **Get your first Twilio phone number** button. We’re going to generate a 10-digit phone number in this lab, but a short-code would also work if preferred. This number should be enabled for voice and messaging by default. A popup will appear with your new phone number, click **Choose this number**. If the proposed phone number does not support messaging, click "Search for a different number", select your country and select the checkbox "SMS", then click "Search". Twilio propose a list of phone number, select "Choose number" for one of them. Then, type your address, click "Save and continue" and "Done".
+3\. On the Phone Numbers screen, click **Get Started** to assign a phone number to your account. Then click the red **Get a trial number** button. We’re going to generate a 10-digit phone number in this lab, but a short-code would also work if preferred. This number should be enabled for voice and messaging by default. A popup will appear with your new phone number, click **Choose this number**. If the proposed phone number does not support messaging, click "Search for a different number", select your country and select the checkbox "SMS", then click "Search". Twilio propose a list of phone number, select "Choose number" for one of them. Then, type your address, click "Save and continue" and "Done".
 
 * **International Users** - These are US phone numbers that you are provisioning in Twilio. You can also choose to configure an internationl number in Twilio, however there may be charges that apply. Currently this workshop only supports US phone numbers in the front end JS application due to the necessary formatting logic that has yet to be introduced into the code!
 
 If you have an international mobile device, you can still do this lab. When registering for a user account in the zombie chat, just use a dummy placeholder 10 digit phone number for now. Later steps in this lab will illustrate a workaround that allows you to send SMS using your international phne number*
 
-4\. Once you’ve received a phone number, click the **Manage Numbers** button on the left navigation pane. Click on your phone number, which will take you to the properties page for that number.
+4\. Once you’ve received a phone number, click the **ellipses button->Super Network->Phone Numbers** button on the left navigation pane. Click on your phone number, which will take you to the properties page for that number.
 
 5\. Scroll to the bottom of the properties page, to the **Messaging** section. In the **Configure With** dropdown, select the **Webhooks/TwiML** option. Leave this page open for now and proceed to the next step.
 
@@ -362,23 +366,25 @@ If you have an international mobile device, you can still do this lab. When regi
 
 * As you'll see throughout this workshop, we will leverage separate Lambda functions to pre-process data before sending standardized/formatted requests to the /zombie/message resource. This allows us to-reuse the existing DynamoDB logic sitting behind the /zombie/message resource rather than writing multiple separate functions that all interact with DynamoDB individually. As messages come in to your Twilio number, the Twilio webhook forwards them with HTTP POST requests to your /zombie/twilio resource, which will be integrated with a backend pre-processing Lambda function. This pre-processing function will strip apart the Twilio payload and format it before making a signed SigV4 HTTPS POST to your /zombie/message service which requires IAM authorization in order to be invoked.
 
-12\. Click **Create a Lambda function** and select the blueprint titled **Blank Function** as we will be creating a brand new function. Click **Next** to skip through the Configure Triggers screen.
+12\. Click **Create a Lambda function** and select the blueprint titled **Blank Function** as we will be creating a brand new function. 
 
-13\. Create a name for the function, such as **"[Your CloudFormation stack name]-TwilioProcessing"**. Set the "Runtime" as **Node.js 4.3**. In the source code found on Github, open the **TwilioProcessing.js** file found inside the **/Twilio** folder. Delete the sample code in the Lambda console editor and replace it with the entire contents from your TwilioProcessing.js file. Once you have copied the code into Lambda, scroll down to [line 8](/Twilio/TwilioProcessing.js#L8) in the code where the **API** variable is declared. **API.endpoint** should show a value of "INSERT YOUR API GATEWAY URL HERE INCLUDING THE HTTPS://". Please replace this string with the fully qualified domain name (FQDN) of the URL for your **/zombie/message** POST method found in API Gateway. For example, it should look something like "https://xxxxxxxx.execute-api.us-west-2.amazonaws.com".
+* Select the US-East-1 Region for your new function 
+* Assign the existing **[Your stack name]-ZombieLabLambdaRole...** Execution Role - For simplicity we are reusing the same Lambda role for our functions.
+* Click **Next** to move to the Lambda Configuration screen.
 
-You should also fill in the region code in the variable **API.region**. This should be the region where you launched CloudFormation.
+13\. Create a name for the function, such as **"[Your CloudFormation stack name]-TwilioProcessing"**. Set the "Runtime" as **Node.js 8.10**. In the source code found on Github, open the **TwilioProcessing.js** file found inside the **/Twilio** folder. Delete the sample code in the Lambda console editor and replace it with the entire contents from your TwilioProcessing.js file. Once you have copied the code into Lambda, scroll down to [line 8](/Twilio/TwilioProcessing.js#L8) in the code where the **API** variable is declared. **API.endpoint** should show a value of "INSERT YOUR API GATEWAY URL HERE INCLUDING THE HTTPS://". Please replace this string with the fully qualified domain name (FQDN) of the URL for your **/zombie/message** POST method found in API Gateway. For example, it should look something like "https://xxxxxxxx.execute-api.us-west-2.amazonaws.com".
+
 
 Next, you will also copy in the name of your DynamoDB **Users** table that was created for you. This should be named as **[Your CloudFormation Stack Name]-users"**. You should copy this table name into the **table** variable in your Lambda code. You will also need to copy in the name of your "phoneindex" (this is an index that was created on the DynamoDB table to assist with querying). These attributes can be found in the Outputs section in CloudFormation. You should be copying the values for **DynamoDBUsersTableName** and **DynamoDBUsersPhoneIndex** from CloudFormation.
 
-* Some of the functions in this workshop were originally authored for Nodejs 0.10 but are still capable of running in the Node4.3 runtimes +. The workshop will soon be upgraded to use the latest Nodejs runtime that is supported by Lambda.
 
-14\. After you have copied the code into the Lambda inline code console and modified the variables, scroll down to the **Lambda function handler and role** section. **Choose an existing role** should be selected from the dropdown. Then for the existing **role**, select the role that looks like **[Your stack name]-ZombieLabLambdaRole...**. For simplicity we are reusing the same Lambda role for our functions.
+Under "Advanced settings", set the **Timeout** field to 30 seconds and keep all the rest of the defaults set. 
 
-15\. Under "Advancted settings", set the **Timeout** field to 30 seconds and keep all the rest of the defaults set. Then click **Next** and then **Create function** on the Review page to create your Lambda function.
+Then click **Save** on the upper right of the page to create your Lambda function.
 
 * You have just created a Lambda function that is integrated as the backend for your /zombie/twilio resource POST method. The function converts the parameters to the correct format for our Chat Service including a conversion to JSON format, and makes an HTTPS POST request to the /zombie/message Chat Service resource. That endpoint will take care of inserting the data into the DynamoDB messages table.
 
-16\. Now that you have created the TwilioProcessing function, you need to connect it to the **POST** method for your /zombie/twilio endpoint. Navigate back to the API Gateway console and select the **POST** method for your **/zombie/twilio** resource.
+15\. Now that you have created the TwilioProcessing function, you need to connect it to the **POST** method for your /zombie/twilio endpoint. Navigate back to the API Gateway console and select the **POST** method for your **/zombie/twilio** resource.
 
 17\. On the **Method Execution** screen for the "POST" method, the "Integration Request" box should show a type of **MOCK** for your /twilio resource.
 
@@ -388,7 +394,7 @@ Next, you will also copy in the name of your DynamoDB **Users** table that was c
 
 20\. Twilio sends data from their API with a content-type of "application/x-www-form-urlencoded", but Lambda requires the content-type to be "application/json" for any payload parameters sent to it. You will configure a Mapping Template so that API Gateway converts the content type of incoming messages into JSON before executing your backend Lambda TwilioProcessing function with the parameters.
 
-21\. On the Integration Request screen for your /zombie/twilio POST method, expand the **Body Mapping Templates** section and click **Add mapping template**. In the textbox for "Content-Type", input **application/x-www-form-urlencoded** and click the little checkmark button to continue. Once you have clicked the little checkbox, a popup window will appear asking if you want to only allow requests that match the Content-Type you specified. Click **Yes, secure this integration**. A new section will appear below with a dropdown for **Generate Template**. Click that dropdown and select **Method Request Passthrough**.
+21\. On the Integration Request screen for your /zombie/twilio POST method, expand the **Mapping Templates** section and click **Add mapping template**. In the textbox for "Content-Type", input **application/x-www-form-urlencoded** and click the little checkmark button to continue. Once you have clicked the little checkbox, a popup window will appear asking if you want to only allow requests that match the Content-Type you specified. Click **Yes, secure this integration**. A new section will appear below with a dropdown for **Generate Template**. Click that dropdown and select **Method Request Passthrough**.
 
 22\. A "Template" text editor window will appear. In this section you will input a piece of VTL transformation logic to convert the incoming Twilio data to JSON format. In this text editor, **delete all of the pre-filled content** and copy the following code into the editor.
 
@@ -399,7 +405,7 @@ After copying the code into the editor, click the **Save** button. You have now 
 
 23\. Now that you have configured the Integration Request to transform incoming messages into JSON, we need to configure the Integration Response to transform outgoing responses back to Twilio into XML format since the Twilio API requires XML as a response Content-Type. This step is required so that when you send SMS messages to the survivor Chat Service, it can respond back to your Twilio Phone Number with a confirmation message that your message was received successfully.
 
-24\. Head back to the Method Execution screen for the twilio POST method. On the "Method Execution" screen for your /zombie/twilio POST method, click **Integration Response**. On the "Integration Response" screen, click the black arrow to expand the method response section. Expand the **Body Mapping Templates** section. You should see a Content-Type of "application/json". We need a Content-Type of XML, not JSON, so **delete this Content-Type by clicking the little black minus icon** and click **Delete** on the pop-up window.
+24\. Head back to the Method Execution screen for the twilio POST method. On the "Method Execution" screen for your /zombie/twilio POST method, click **Integration Response**. On the "Integration Response" screen, click the black arrow to expand the method response section. Expand the **Mapping Templates** section. You should see a Content-Type of "application/json". We need a Content-Type of XML, not JSON, so **delete this Content-Type by clicking the little black minus icon** and click **Delete** on the pop-up window.
 
 25\. Click **Add mapping template** similar to the way you did this in the earlier steps for the Integration Request section.
 
@@ -454,7 +460,9 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 3\. On the **Configure Cluster** page, leave the default cluster settings and click **Next**.
 
-4\. For the access policy, select the **Allow or deny access to one or more AWS accounts or IAM users** option in the dropdown and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
+4\. For the network policy, select the **Public Access** option. 
+
+For the access policy, select the **Allow or deny access to one or more AWS accounts or IAM users** option in the dropdown and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
 
 5\. Select **Next** to go to the domain review page.
 
@@ -469,34 +477,36 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 9\. Go into the Lambda service page by clicking on Lambda in the Management Console.
 
-10\. Select **Create a Lambda Function**.
+10\. Click **Create a Lambda function** and select the blueprint titled **Blank Function** as we will be creating a brand new function. 
+* Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime at the default. You can set a description for the function if you'd like.
+* Select the US-East-1 Region for your new function 
+* Assign the existing **[Your stack name]-ZombieLabLambdaRole...** Execution Role - For simplicity we are reusing the same Lambda role for our functions.
+* Click **Next** to move to the Lambda Configuration screen.
 
-11\. On the Blueprints screen select **Blank Function** to create a Lambda function from scratch.
+11\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Latest** and select the checkbox **Enable trigger**. Then click on Next button..
 
-12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Latest** and select the checkbox **Enable trigger**. Then click on Next button.
+12\. Paste in the code from the ZombieWorkshopSearchIndexing.js file provided to you. This is found in the Github repo in the "ElasticsearchLambda" folder.
 
-13\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime at the default. You can set a description for the function if you'd like.
-
-14\. Paste in the code from the ZombieWorkshopSearchIndexing.js file provided to you. This is found in the Github repo in the "ElasticsearchLambda" folder.
-
-15\. On [line 6](/ElasticSearchLambda/ZombieWorkshopSearchIndexing.js#L6) in the code provided, replace the **region** variable with the code for the region you are working in (the region you launched your stack, created your Lambda function etc). If you're working in Oregon region, then leave the code us-west-2 as is.
+13\. On [line 6](/ElasticSearchLambda/ZombieWorkshopSearchIndexing.js#L6) in the code provided, check the **region** variable with the code for the region you are working in which should be us-east-1, edit as necessary.
 
 Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT_HERE** with the Elasticsearch endpoint created in step 8\. **Make sure the endpoint you paste starts with https://**.
 
 * This step requires that your cluster is finished creating and in "Active" state before you'll have access to see the endpoint of your cluster.
 
-16\. Now you'll add an execution role to your Lambda function which gives permissions for your Lambda function to access AWS resources. For the Role, select **Choose an existing role**, and for the Existing Role, select **"[Your CloudFormation stack name]-ZombieLabLambdaRole"** which is the role that was created for you for this workshop. It has permissions to the Elasticsearch service.
+Under "Advanced settings", set the **Timeout** field to 60 seconds and keep all the rest of the defaults set. 
 
-17\. Expand the "Advanced settings" section and find the "Timeout" field for your Lambda function. In the timeout field, change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
+Then click **Save** on the upper right of the page to create your Lambda function.
 
-18\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster. Your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat, at least 5 as configured in the DynamoDB Streams event source (batch size). You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
+
+
+14\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster. Your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat, at least 5 as configured in the DynamoDB Streams event source (batch size). You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
 ![API Gateway Invoke URL](/Images/Search-Done.png)
 
 **LAB 3 COMPLETE**
 
 If you would like to explore and search over the messages in the Kibana web UI that is provided with your cluster, you will need to navigate to the Elasticsearch domain you created and change the permissions. Currently you've configured the permissions so that only your AWS account has access. This allows your Lambda function to index messages into the cluster.
 
-To use the web UI to build charts and search over the index, you will need to implement an IP based policy to whitelist your computer/laptop/network or for simplicity, choose to allow everyone access. For instructions on how to modify the access policy of an ES cluster, visit [this documentation](http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-gsg-configure-access.html). If you choose to open access to anyone be aware that anyone can see your messages, so please be sure to restrict access back to your AWS account when you're done exploring Kibana, or simply delete your ES cluster.  
+To use the web UI to build charts and search over the index, you will need to implement an IP based policy to whitelist your computer/laptop/network or for simplicity, **choose to temporarily allow everyone access using the provided access policy template**. For instructions on how to modify the access policy of an ES cluster, visit [this documentation](http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-gsg-configure-access.html). If you choose to open access to anyone be aware that anyone can see your messages, so please be sure to restrict access back to your AWS account when you're done exploring Kibana, or simply delete your ES cluster.  
 
 * * *
 
@@ -511,7 +521,7 @@ If you aren't familiar with Slack, they offer a free chat communications service
 **Slack Integration Architecture**
 ![Overview of Slack Integration](/Images/SlackOverview.png)
 
-1\. Go to [http://www.slack.com](http://www.slack.com) and create a username, as well as a team. If you want to use your existing Slack username and existing team, then proceed with that profile instead of creating a new one.
+1\. Go to [http://www.slack.com](http://www.slack.com) and join the provided slack channel and team. If you want to use your existing Slack username and join the workshop team, then proceed with that profile instead of creating a new one.
 
 2\. Once logged into your Slack team, navigate to [https://slack.com/apps](https://slack.com/apps) which should direct you to the app directory for your team. In the search bar in the middle of the App Directory page, type **slash commands** and select it from the options. This will take you to the Slash Commands portal. 
 
@@ -519,52 +529,51 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 Slash commands allow you to define a command that you can use within Slack to trigger  Slack to perform actions in an event driven manner. In this case we are going to configure a slash command to forward messages to an external source with a webhook. You'll configure your Slash Command to make a POST request to a /zombie/slack API resource you will soon be creating in API Gateway. 
 
-4\. On the Slash Commands configuration page, define a command in the **Commands** text box. Insert **/survivors** as your Slash Command. Then select "Add Slash Command Integration" to save it.
+4\. On the Slash Commands configuration page, define a command in the **Commands** text box. Insert **/"initials"survivors** as your Slash Command. Then select "Add Slash Command Integration" to save it.
 
 5\. On the Integration Settings page, scroll down to the **Method** configuration andmake sure the **Method** section has "POST" selected from the dropdown options. Then scroll to the **Token** section and copy the Token (or generate a new one) to a text file as you'll need it in the following steps.
 
+*Feel free to add an autocompelte setting using your slash app name to make it easy to locate when testing
+
 6\. Keep the Slack browser tab open and in another tab navigate to the AWS Lambda management console in the AWS Management Console.
 
-7\. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
+7\. Click **Create a Lambda function** and select the blueprint titled **Blank Function** as we will be creating a brand new function. 
+* Give your function a name, such as **"[Your CloudFormation Stack name]-SlackService"**. Keep the runtime at the default. You can set a description for the function if you'd like.
+* Select the US-East-1 Region for your new function 
+* Assign the existing **[Your stack name]-ZombieLabLambdaRole...** Execution Role - For simplicity we are reusing the same Lambda role for our functions.
+* Click **Next** to move to the Lambda Configuration screen.
 
-8\. On the Blueprints page select **Blank Function** to create a function from scratch. Also skip past the triggers page by selecting **Next**.
-
-9\. Give your function a name such as **"[Your CloudFormation Stack name]-SlackService"**. For the Nodejs version, you can keep the default Nodejs version selected. Now navigate to the GitHub repo for this workshop, or the location where you downloaded the GitHub files to your local machine.
-
-10\. Open the **SlackService.js** file from the GitHub repo, found in the slack folder. Copy the entire contents of this js file into the Lambda inline edit window.
+8\. Open the **SlackService.js** file from the GitHub repo, found in the slack folder. Copy the entire contents of this js file into the Lambda inline edit window.
 
 * This SlackService function will serve as the backend for a new /zombie/slack API resource you will create later. This function accepts incoming messages forwarded from Slack when you use the slash command, it then reformats the parameters and proxies the Slack messages to the zombie survivor chat service (/zombi/message) . This Lambda function verifies that the incoming message has the predefined Slack Token, and it also does a DynamoDB query against the Users table to validate that the user who submitted the message in Slack is a preconfigured survivor in our backend (Remember when you signed up for the chat, you provided your Slack username and team domain as part of the sign-up process). In this workshop, we're using this is as the way to authorize requests against the /zombie/slack resource.
 
-11\. You should have saved the Slack Token string from earlier. Copy the Token string from Slack into the "token" variable on [line 15](/Slack/SlackService.js#L15) in the Lambda function, replacing the string **INSERT YOUR TOKEN FROM SLACK HERE** with your own token.
+9\. You should have saved the Slack Token string from earlier. Copy the Token string from Slack into the "token" variable on [line 15](/Slack/SlackService.js#L15) in the Lambda function, replacing the string **INSERT YOUR TOKEN FROM SLACK HERE** with your own token.
 
 * Slack provides a unique token associated with your integration. You are copying this token into your Lambda function as a form of validation. When incoming requests from Slack are sent to your API endpoint, and your Lambda function is invoked with the Slack payload, your Lambda function will check to verify that the incoming Token in the request matches the Token you provided in the code. If the token does not match, Lambda returns an error and doesn't process the request.
 
-12\. There are 4 variables you need to insert in the code to communicate with the backend.
+10\. There are 4 variables you need to check/insert in the code to communicate with the backend.
 
 a) In the "API" variable, you will insert the fully qualified domain name (FQDN) for your API. The **API.endpoint** variable should show a value of "INSERT YOUR API GATEWAY FQDN HERE INCLUDING THE HTTPS://" on [line 9](/Slack/SlackService.js#L9). Your final FQDN inserted into the code should look something like "https://xxxxxxxx.execute-api.us-west-2.amazonaws.com". This allows the SlackService function to communicate with your API.
 
-b) You should also fill in the region code in the variable **API.region**. This should be the region where you launched CloudFormation.
+b) You should verify the region code in the variable **API.region**. This should be us-east-1
 
 c) Finally you will also copy in the name of your DynamoDB Users table that was created for you. This should be placed in the **table** variable. You will also need to copy in the name of your "slackindex" (this is an index that was created on the DynamoDB table to assist with querying). These attributes can be found in the Outputs section in CloudFormation. You should be copying the values for **DynamoDBUsersTableName** and **DynamoDBUsersSlackIndex** from CloudFormation.
 
-13\. After you have copied the code into the Lambda inline code console and modified the variables, scroll down to the **Lambda function handler and role** section. For the role, select **Choose an existing role** from the dropdown and then select the role that looks like **[Your stack name]-ZombieLabLambdaRole...**. For simplicity we are reusing the same Lambda role for our functions.
+* Under "Advanced settings", set the **Timeout** field to 60 seconds and keep all the rest of the defaults set. 
 
-14\. In the Advanced Settings, set the **Timeout** to **30** seconds. Then click **Next**.
+* Then click **Save** on the upper right of the page to create your Lambda function.
 
-15\. On the review page, make sure that everything looks correct.
 
-16\. Click **Create function**. Your Lambda function will be created.
-
-17\. When the function is created, navigate to the API Gateway service in the AWS Management Console. Click into your "Zombie Workshop API Gateway" API. On the left Resources pane, click/highlight the "/zombie" resource so that it is selected. Then select the **Actions** button and choose "Create Resource". For Resource Name, insert **slack** and for Resource Path, insert **slack**. Click "Create Resource" to create your slack API resource. The final resource for your Slack API should be as shown below.
+10\. When the function is created, navigate to the API Gateway service in the AWS Management Console. Click into your "Zombie Workshop API Gateway" API. On the left Resources pane, click/highlight the "/zombie" resource so that it is selected. Then select the **Actions** button and choose "Create Resource". For Resource Name, insert **slack** and for Resource Path, insert **slack**. Click "Create Resource" to create your slack API resource. The final resource for your Slack API should be as shown below.
 ![Create Slack API Resource](/Images/Slack-Step17.png)
 
 *  In this step, you are creating a new API resource that the Slack slash command webhook can forward requests to. In the next steps, you'll create a POST method associated with this resource that triggers your Lambda function. When you type messages in Slack with the correct slash command, Slack will send requests to this resource, which will invoke your SlackService Lambda function to pre-process the payload and make a call to your /zombie/message endpoint to insert the data into DynamoDB.
 
-18\. For your newly created "/slack" resource, highlight it, then click **Actions** and select **Create Method** to create the **POST** method for the /zombie/slack resource. In the dropdown, select **POST**. Click the checkmark to create the POST method. On the Setup page, choose an Integration Type of **Lambda Function**, and select the region that you are working in for the region dropdown. For the Lambda Function field, type "SlackService" for the name of the Lambda Function. It should autofill your function name. Click **Save** and then **OK** to confirm.
+11\. For your newly created "/slack" resource, highlight it, then click **Actions** and select **Create Method** to create the **POST** method for the /zombie/slack resource. In the dropdown, select **POST**. Click the checkmark to create the POST method. On the Setup page, choose an Integration Type of **Lambda Function**, and select the region that you are working in for the region dropdown. For the Lambda Function field, type "SlackService" for the name of the Lambda Function. It should autofill your function name. Click **Save** and then **OK** to confirm.
 
-19\. Click **Integration Request** for the /slack POST method. We'll create a Mapping Template to convert the incoming query string parameters from Slack into JSON which is the format Lambda requires for parameters. This mapping template is required so that the incoming Slack message can be converted to the right format.
+12\. Click **Integration Request** for the /slack POST method. We'll create a Mapping Template to convert the incoming query string parameters from Slack into JSON which is the format Lambda requires for parameters. This mapping template is required so that the incoming Slack message can be converted to the right format.
 
-20\. Expand the **Body Mapping Templates** arrow and click **Add mapping template**. In the Content-Type box, enter **application/x-www-form-urlencoded** and click the little checkmark to continue. If a popup appears asking if you would like to secure the integration, click **Yes, secure this integration**. This ensures that only requests with the defined content-types will be allowed.
+12\. Expand the **Mapping Templates** arrow and click **Add mapping template**. In the Content-Type box, enter **application/x-www-form-urlencoded** and click the little checkmark to continue. If a popup appears asking if you would like to secure the integration, click **Yes, secure this integration**. This ensures that only requests with the defined content-types will be allowed.
 
 As you did in the Twilio lab, we're going to copy VTL mapping logic to convert the request to JSON. A new section will appear on the right side of the screen with a dropdown for **Generate Template**. Click that dropdown and select **Method Request Passthrough**.
 
@@ -578,14 +587,14 @@ Click the grey **Save** button to continue. The result should look like the scre
 
 ![Slack Integration Response Mapping Template](/Images/Slack-Step20.png)
 
-21\. Click the **Actions** button on the left side of the API Gateway console and select **Deploy API** to deploy your API. In the Deploy API window, select **ZombieWorkshopStage** from the dropdown and click **Deploy**.
+14\. Click the **Actions** button on the left side of the API Gateway console and select **Deploy API** to deploy your API. In the Deploy API window, select **ZombieWorkshopStage** from the dropdown and click **Deploy**.
 
-22\. On the left pane navigation tree, expand the ZombieWorkshopStage tree. Click the **POST** method for the **/zombie/slack** resource. You should see an Invoke URL appear for that resource as shown below.
+15\. On the left pane navigation tree, expand the ZombieWorkshopStage tree. Click the **POST** method for the **/zombie/slack** resource. You should see an Invoke URL appear for that resource as shown below.
 ![Slack Resource Invoke URL](/Images/Slack-Step22.png)
 
-23\. Copy the entire Invoke URL. Navigate back to the Slack.com website to the Slash Command setup page and insert the Slack API Gateway Invoke URL you just copied into the "URL" textbox. Make sure to copy the entire url including "HTTPS://". Scroll to the bottom of the Slash Command screen and click **Save Integration**.
+16\. Copy the entire Invoke URL. Navigate back to the Slack.com website to the Slash Command setup page and insert the Slack API Gateway Invoke URL you just copied into the "URL" textbox. Make sure to copy the entire url including "HTTPS://". Scroll to the bottom of the Slash Command screen and click **Save Integration**.
 
-24\. You're ready to test out the Slash Command integration. In the team chat channel for your Slack account, type the Slash Command "/survivors" followed by a message. For example, type "/survivors Please help me I am stuck and zombies are trying to get me!". After sending it, you should get a confirmation response message from Slack Bot like the one below:
+17\. You're ready to test out the Slash Command integration. In the team chat channel for your Slack account, type the Slash Command "/survivors" followed by a message. For example, type "/survivors Please help me I am stuck and zombies are trying to get me!". After sending it, you should get a confirmation response message from Slack Bot like the one below:
 ![Slack Command Success](/Images/Slack-Step24.png)
 
 **LAB 4 COMPLETE**
