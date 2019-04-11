@@ -2,6 +2,8 @@
 
 # Zombie Microservices Workshop: Lab Guide
 
+> **Important**: The following content is not maintained anymore. You should use the [new Wild Rydes Serverless Workshops](https://github.com/aws-samples/aws-serverless-workshops) instead. If you still want to run this workshop be aware that instruction are outdated and you'll have to patch CloudFormation scripts and Lambda code.
+
 ## Overview of Workshop Labs
 The [Zombie Microservices Workshop](http://aws.amazon.com/events/zombie-microservices-roadshow/) introduces the basics of building serverless applications using [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon API Gateway](https://aws.amazon.com/api-gateway/), [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), [Amazon Cognito](https://aws.amazon.com/cognito/), [Amazon SNS](https://aws.amazon.com/sns/), and other AWS services. In this workshop, as a new member of the AWS Lambda Signal Corps, you are tasked with completing the development of a serverless survivor communications system during the Zombie Apocalypse.
 
@@ -528,11 +530,11 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 1\. Go to [http://www.slack.com](http://www.slack.com) and create a username, as well as a team. If you want to use your existing Slack username and existing team, then proceed with that profile instead of creating a new one.
 
-2\. Once logged into your Slack team, navigate to [https://slack.com/apps](https://slack.com/apps) which should direct you to the app directory for your team. In the search bar in the middle of the App Directory page, type **slash commands** and select it from the options. This will take you to the Slash Commands portal. 
+2\. Once logged into your Slack team, navigate to [https://slack.com/apps](https://slack.com/apps) which should direct you to the app directory for your team. In the search bar in the middle of the App Directory page, type **slash commands** and select it from the options. This will take you to the Slash Commands portal.
 
-3\. On the Slash Commands page, click **Add configuration**. 
+3\. On the Slash Commands page, click **Add configuration**.
 
-Slash commands allow you to define a command that you can use within Slack to trigger  Slack to perform actions in an event driven manner. In this case we are going to configure a slash command to forward messages to an external source with a webhook. You'll configure your Slash Command to make a POST request to a /zombie/slack API resource you will soon be creating in API Gateway. 
+Slash commands allow you to define a command that you can use within Slack to trigger  Slack to perform actions in an event driven manner. In this case we are going to configure a slash command to forward messages to an external source with a webhook. You'll configure your Slash Command to make a POST request to a /zombie/slack API resource you will soon be creating in API Gateway.
 
 4\. On the Slash Commands configuration page, define a command in the **Commands** text box. Insert **/survivors** as your Slash Command. Then select "Add Slash Command Integration" to save it.
 
