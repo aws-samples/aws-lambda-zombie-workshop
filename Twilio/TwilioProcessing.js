@@ -7,7 +7,7 @@ var path = require('path');
 
 /* == Globals == */
 var API = {
-    region: 'INSERT YOUR REGION CODE HERE', //i.e 'us-east-1'
+    region: 'us-east-1', 
     endpoint: 'INSERT YOUR API GATEWAY URL HERE INCLUDING THE HTTPS://' // ie: 'https://xxxxxxx.execute-api.us-east-1.amazonaws.com'
 };
 
