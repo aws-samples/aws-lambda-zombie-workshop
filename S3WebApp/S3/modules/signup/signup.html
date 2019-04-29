@@ -38,10 +38,10 @@
                 </div>
                 <div class="form-group " ng-class="{ 'has-error': signupForm.phone.$touched && signupForm.phone.$invalid }">
                     <div class="col-xs-12">
-                        <input name="phone" class="form-control" ng-model="user.phone" required placeholder="Mobile Phone" type="text" ng-pattern="/^[1-9][0-9]{9}$/">
+                        <input name="phone" class="form-control" ng-model="user.phone" required placeholder="Mobile Phone" type="text" ng-pattern="/^\+[1-9][0-9]{8,15}$/">
                         <div class="help-block" ng-messages="signupForm.phone.$error" ng-if="signupForm.phone.$touched">
                             <p ng-message="required">This field is required</p>
-                            <p ng-message="pattern">Digits only please. Must be a valid 10 digit phone number</p>
+                            <p ng-message="pattern">Digits only please. Must start with + and the country code, must be between 9 and 16 digits</p>
                         </div>
                     </div>
                 </div>
