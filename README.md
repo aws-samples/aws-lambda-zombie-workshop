@@ -469,7 +469,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 3\. On the **Configure Cluster** page, leave the default cluster settings and click **Next**.
 
-4\. For the access policy, select the **Allow or deny access to one or more AWS accounts or IAM users** option in the dropdown and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
+4\. For the access set up, select **Public access** in the network configuration section for easy cluster access from outside your VPC (not recommended in general). Select the **Allow or deny access to one or more AWS accounts or IAM users** option in the dropdown **Set the domain access policy to** and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
 
 5\. Select **Next** to go to the domain review page.
 
