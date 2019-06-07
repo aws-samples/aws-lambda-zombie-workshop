@@ -3,8 +3,8 @@ var path = require('path');
 
 /* == Globals == */
 var esDomain = {
-    region: 'us-west-2',
-    endpoint: 'https://ENDPOINT_HERE',
+    region: 'replace this with your aws region',
+    endpoint: 'replace this with your elastic search endpoint',
     index: 'messages',
     doctype: 'message'
 };
@@ -41,7 +41,6 @@ exports.handler = function(event, context) {
  */
 function postToES(doc, context) {
     var req = new AWS.HttpRequest(endpoint);
-
     console.log('create post request');
     req.method = 'POST';
     req.path = path.join('/', esDomain.index, esDomain.doctype);
@@ -49,12 +48,12 @@ function postToES(doc, context) {
     req.headers['presigned-expires'] = false;
     req.headers['Host'] = endpoint.host;
     req.body = doc;
+    req.headers['content-type'] = 'application/json';
 
     console.log('Creating the Signer for the post request');
     var signer = new AWS.Signers.V4(req , 'es');  // es: service code
     signer.addAuthorization(creds, new Date());
 
-    console.log('Sending Data');
     var send = new AWS.NodeHttpClient();
     send.handleRequest(req, null, function(httpResp) {
         var respBody = '';
@@ -62,7 +61,6 @@ function postToES(doc, context) {
             respBody += chunk;
         });
         httpResp.on('end', function (chunk) {
-            console.log('Response: ' + respBody);
             context.succeed('Lambda added document ' + doc);
         });
     }, function(err) {
