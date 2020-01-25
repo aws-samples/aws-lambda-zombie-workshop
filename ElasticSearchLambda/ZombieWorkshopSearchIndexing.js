@@ -48,6 +48,7 @@ function postToES(doc, context) {
     req.region = esDomain.region;
     req.headers['presigned-expires'] = false;
     req.headers['Host'] = endpoint.host;
+    req.headers['Content-Type'] = 'application/json';
     req.body = doc;
 
     console.log('Creating the Signer for the post request');
