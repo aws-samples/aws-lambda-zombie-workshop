@@ -27,7 +27,9 @@ angular.module('chatApp.chatPanel', ['chatApp.chatMessages'])
                     apigClient.zombieMessageGet(params, body, additionalParams)
                         .then(function(result){
                             if($rootScope.chatting) {
-                                //console.log('result: ' + result.data.messages);
+                                result.data.messages.forEach(element => {
+                                    element.message = unescape(element.message);
+                                });
                                 $scope.messages = result.data.messages;
                                 
                             } else {
